@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style id="compiled-css" type="text/css">
+        canvas {
+            background: black;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .col {
+            flex: 0 0 48%;
+            max-width: 48%;
+        }
+
+        canvas {
+            background: black;
+            width: 100%;
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        #textInput,
+        #downloadButton {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #downloadButton {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #downloadButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- <img id="idImg" src="1.jpeg" hidden />
+    <canvas id="idCanvas" style="display: none;"></canvas>
+    <input type="text" id="textInput" placeholder="Enter Text">
+    <button id="downloadButton">Download Image</button> -->
+
+    <img id="idImg" src="1.jpeg" hidden class="img-fluid" />
+    <canvas id="idCanvas" style="display: none;"></canvas>
+    <div class="container">
+        <div class="col">
+            <div class="form-group">
+                <label for="textInput">Enter Text</label>
+                <input type="text" class="form-control" id="textInput" placeholder="Enter Text">
+            </div>
+            <button class="btn btn-primary" id="downloadButton">Download Image</button>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            draw();
+
+            // Bind an input event listener to update the canvas dynamically
+            $('#textInput').on('input', function () {
+                draw();
+            });
+        });
+
+        function draw() {
+            var canvas = $('#idCanvas')[0];
+            var img = $('#idImg');
+            var textInput = $('#textInput').val();
+
+            // set canvas size as per image size
+            canvas.width = img.width();
+            canvas.height = img.height();
+
+            var context = canvas.getContext('2d');
+            var imageObj = new Image();
+
+            imageObj.onload = function () {
+                context.drawImage(imageObj, 0, 0);
+                context.font = "58px Calibri";
+                context.fillStyle = "red";
+                context.fillText(textInput, 50, 925);
+            }
+
+            imageObj.setAttribute('crossOrigin', 'anonymous');
+            imageObj.src = "1.jpeg";
+        };
+
+        $('#downloadButton').click(function () {
+            var mo_no = $('#textInput').val();
+            var canvas = $('#idCanvas')[0];
+            var dataURL = canvas.toDataURL();
+
+            // Create a temporary link and trigger a click to download the image
+            var a = $('<a>').attr('href', dataURL).attr('download', mo_no + '_aadarsh.png').appendTo('body');
+            a[0].click();
+            a.remove();
+        });
+
+    </script>
+
+</body>
+
+</html>
